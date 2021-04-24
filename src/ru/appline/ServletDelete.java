@@ -45,7 +45,7 @@ public class ServletDelete extends HttpServlet {
 
         if (id == 0) {
             for (Map.Entry<Integer, User> entry : model.getFromList().entrySet()) {
-                model.getFromList().remove(id);
+                model.getFromList().remove(entry.getKey());
             }
             pw.print(gson.toJson("Все пользователи удалены"));
         } else if (id > 0) {

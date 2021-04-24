@@ -1,5 +1,4 @@
 <%@ page import="ru.appline.logic.Model" %>
-<$@ page import="ru.appline.logic.Model" %>
 <%--
   Created by IntelliJ IDEA.
   User: prong
