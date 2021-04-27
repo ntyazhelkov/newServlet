@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.Map;
 
 @WebServlet(urlPatterns = "/delete")
@@ -44,16 +45,25 @@ public class ServletDelete extends HttpServlet {
         PrintWriter pw = response.getWriter();
 
         if (id == 0) {
-            for (Map.Entry<Integer, User> entry : model.getFromList().entrySet()) {
-                model.getFromList().remove(entry.getKey());
+            for(Iterator<Integer> iterator = model.getFromList().keySet().iterator(); iterator.hasNext(); ) {
+                Integer key = iterator.next();
+                if(key != 0) {
+                    iterator.remove();
+                }
             }
             pw.print(gson.toJson("Все пользователи удалены"));
         } else if (id > 0) {
-            if (id > model.getFromList().size()) {
+            int i = 0;
+            for(Iterator<Integer> iterator = model.getFromList().keySet().iterator(); iterator.hasNext(); ) {
+                Integer key = iterator.next();
+                if(key == id) {
+                    iterator.remove();
+                    i++;
+                }
+                pw.print(gson.toJson("Пользователь удален"));
+            }
+            if (i == 0) {
                 pw.print(gson.toJson("Такого пользователя нет!"));
-            } else {
-                model.getFromList().remove(id);
-                pw.print(gson.toJson(model.getFromList()));
             }
         } else {
             pw.print(gson.toJson("ID должен быть больше нуля!"));

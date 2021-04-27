@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.Map;
 
 @WebServlet(urlPatterns = "/get")
@@ -93,10 +94,16 @@ public class ServletList extends HttpServlet {
         if (id == 0) {
                 pw.print(gson.toJson(model.getFromList()));
         } else if (id > 0) {
-            if(id > model.getFromList().size()) {
+            int i = 0;
+            for(Iterator<Integer> iterator = model.getFromList().keySet().iterator(); iterator.hasNext(); ) {
+                Integer key = iterator.next();
+                if(key == id) {
+                    pw.print(gson.toJson(model.getFromList().get(id)));
+                    i++;
+                }
+            }
+            if (i == 0) {
                 pw.print(gson.toJson("Такого пользователя нет!"));
-            } else {
-                pw.print(gson.toJson(model.getFromList().get(id)));
             }
         } else {
             pw.print(gson.toJson("ID должен быть больше нуля!"));

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.Map;
 
 @WebServlet(urlPatterns = "/put")
@@ -49,11 +50,17 @@ public class ServletPut extends HttpServlet {
         PrintWriter pw = response.getWriter();
 
         if (id > 0) {
-            if (id > model.getFromList().size()) {
+            int i = 0;
+            for(Iterator<Integer> iterator = model.getFromList().keySet().iterator(); iterator.hasNext(); ) {
+                Integer key = iterator.next();
+                if(key == id) {
+                    model.getFromList().put(id, user);
+                    pw.print(gson.toJson(model.getFromList()));
+                    i++;
+                }
+            }
+            if (i == 0) {
                 pw.print(gson.toJson("Такого пользователя нет!"));
-            } else {
-                model.getFromList().put(id, user);
-                pw.print(gson.toJson(model.getFromList()));
             }
         } else {
             pw.print(gson.toJson("ID должен быть больше нуля!"));
